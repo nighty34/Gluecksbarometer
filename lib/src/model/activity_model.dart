@@ -3,6 +3,7 @@ import './activity_model.dart';
 class Activity {
   String name;
   String iconSrc;
+  String desc;
 
   ///Activity Constructor
   Activity(this.name, this.iconSrc);
