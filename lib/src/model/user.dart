@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
-import 'activity_model.dart';
-import 'user_model.dart';
+import 'activity.dart';
+import 'user.dart';
 
 class User {
   Color prefColor;

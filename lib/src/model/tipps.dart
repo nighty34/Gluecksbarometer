@@ -1,4 +1,4 @@
-import './tipps_model.dart';
+import './tipps.dart';
 
 class Tipps{
   String title;

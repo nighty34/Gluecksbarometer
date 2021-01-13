@@ -1,5 +1,5 @@
-import 'package:gluecks_barometer/src/model/activity_model.dart';
-import './entry_model.dart';
+import 'package:gluecks_barometer/src/model/activity.dart';
+import './entry.dart';
 
 
 class Entry {
