@@ -22,7 +22,7 @@ class Home extends StatelessWidget {
         child: DefaultTabController(
             length: 3,
             child: Scaffold(
-              bottomNavigationBar: AppBar(
+              appBar: AppBar(
                 bottom: TabBar(
                   indicatorColor: Colors.white,
                   tabs: [
@@ -31,24 +31,13 @@ class Home extends StatelessWidget {
                     Tab(text: "Tipps")
                   ],
                 ),
+                title: Text("TEST"),
               ),
               body: TabBarView(
                 children: [
-                  Center(child: Text("I'll be a list!")),
-                  Center(child: ListView(
-                    children: <Widget>[
-                      Card(
-                        child: Text("Wie fühlst du dich heute?"),
-                      ),
-                      Card(
-                        child: Text("Warst du heute produktiv?"),
-                      ),
-                      Card(
-                        child: Text("Was hast du heute gemacht?"),
-                      )
-                    ],
-                  ),),
-                  Center(child: Text("Tipps"),)
+                  buildStatus(),
+                 buildEvulation(),
+                  buildTipps()
                 ],
               ),
             )
@@ -56,5 +45,57 @@ class Home extends StatelessWidget {
       ),
     );
   }
+
+  Widget buildStatus(){
+    return Center(child: ListView(
+      children: <Widget>[
+        Card(child: ListTile(
+          title: Text("Guten Tag, TEMP!"),
+          tileColor: Colors.blueGrey,
+
+          //TODO: LIST WITH FAVs
+
+        ),)
+      ],
+    ),);
+  }
+
+
+  Widget buildEvulation(){
+    return  Center(child: ListView(
+      children: <Widget>[
+        Card(
+          child: ListTile(
+            title: Text("Bestandsaufnahme"),
+            tileColor: Colors.blueGrey,
+          ),
+        ),
+        Card(
+          child: ListTile(title: Text("Wie fühlst du dich heute?"),),
+        ),
+        Card(
+          child: ListTile(title: Text("Warst du heute produktiv?"),),
+        ),
+        Card(
+          child: Text("Was hast du heute gemacht?"),
+        )
+      ],
+    ),);
+  }
+
+  Widget buildTipps(){
+    return  Center(child: ListView(
+      children: <Widget>[
+        Card(
+          child: ListTile(
+            title: Text("Tipps"),
+            tileColor: Colors.blueGrey,
+          ),
+        )
+      ],
+    ),);
+  }
+
+
 }
 
