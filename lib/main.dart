@@ -1,6 +1,7 @@
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:icon_picker/icon_picker.dart';
 
 void main() {
   runApp(MyApp());
@@ -126,7 +127,12 @@ class EntryBoard extends StatelessWidget {
               //TODO: GENERATE ACTIVITIES
 
 
-              Card(child: ListTile(title: Text("Aktivität hinzufügen"),),)
+              Card(child: ListTile(title: Text("Aktivität hinzufügen"),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ActivityDesigner()));
+              }
+              ),)
             ],
           ),
         ),
@@ -175,3 +181,59 @@ class EntryBoard extends StatelessWidget {
   }
 }
 
+class ActivityDesigner extends StatelessWidget {
+  final Map<String, IconData> myIconCollection = {
+    'favorite': Icons.favorite,
+    'home': Icons.home,
+    'android': Icons.android,
+    'album': Icons.album,
+    'ac_unit': Icons.ac_unit
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text("Activity Designer"),
+          ),
+          body: ListView(
+            children: <Widget>[
+              Card(
+                child: ListTile(
+                  title: Text("Bestandsaufnahme"),
+                  tileColor: Colors.blueGrey,
+                ),
+              ),
+              Card(
+                child: ListTile(
+                  title: Text("Name"),
+                  trailing: Text("ENTRY"), //TODO: Replace with proper Textbox
+                ),
+              ),
+              Card(
+                child: ListTile( //TODO: NOT WORKING
+                  title: Text("Icon"),
+                  trailing: IconPicker(
+                      initialValue: 'favorite',
+                      icon: Icon(Icons.apps),
+                      labelText: "Icon",
+                      title: "Select an icon",
+                      cancelBtn: "CANCEL",
+                      enableSearch: true,
+                      searchHint: 'Search icon',
+                      iconCollection: myIconCollection,
+                      onChanged: (val) => print(val),
+                      onSaved: (val) => print(val),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
