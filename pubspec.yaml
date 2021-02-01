@@ -21,10 +21,11 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  provider: ^4.3.3
+  flutter_rating_bar: ^3.2.0+1
+  flutter_material_pickers: ^1.9.1
   flutter:
     sdk: flutter
-  flutter_rating_bar: ^3.2.0+1
-  icon_picker: "^1.1.1"
 
 
   # The following adds the Cupertino Icons font to your application.

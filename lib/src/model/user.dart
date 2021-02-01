@@ -1,16 +1,12 @@
-import 'package:flutter/cupertino.dart';
-
-import 'activity.dart';
-import 'user.dart';
+import 'package:gluecks_barometer/src/model/activity.dart';
+import 'package:gluecks_barometer/src/model/entry.dart';
 
 class User {
-  Color prefColor;
-  List<Activity> mostUsedActivities;
-  String name;
+  List<Entry> entries = List.empty(growable: true);
+  Map<String, Activity> activities = {};
 
-
-  User(){
-    this.prefColor = Color.fromARGB(10, 10, 10, 10); //TODO: REDO!
-    this.mostUsedActivities = new List<Activity>();
+  User() {
+    activities["Jogging"] = new Activity(
+        "Jogging", "run"); // TODO add defaults and read from database
   }
 }
