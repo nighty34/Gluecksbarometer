@@ -1,15 +1,12 @@
-import 'package:gluecks_barometer/src/model/activity.dart';
-import './entry.dart';
-
+import 'package:gluecks_barometer/src/model/mood.dart';
 
 class Entry {
-  Activity activity;
+  List<String> activity;
   DateTime entryDate;
-  var productivityValue;
-  var feelingValue;
+  Mood mood;
+  Mood productivity;
 
-  ///Entry Constructor
-  Entry(this.activity, this.entryDate, this.productivityValue, this.feelingValue);
+  Entry(this.activity, this.entryDate, this.mood, this.productivity);
 }
 
 
