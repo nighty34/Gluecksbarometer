@@ -4,8 +4,8 @@ import 'package:gluecks_barometer/src/model/mood.dart';
 
 class NewDatapointController extends ChangeNotifier {
   Mood _mood;
-  List<Activity> _chosenActivities;
   Mood _productivity;
+  List<Activity> _chosenActivities;
 
   NewDatapointController() {
     reset();
