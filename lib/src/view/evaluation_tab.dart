@@ -135,9 +135,9 @@ class EvaluationTab extends StatelessWidget {
                 Text((x + 1).toString() + "."),
                 Column(
                   children: [
-                    Icon(dataController.activityIcons[dataController
-                        .user.activities[topList[x].name].iconSrc]),
-                    Text(topList[x].name)
+                    Icon(dataController.activityIcons[
+                        dataController.user.activities[topList[x].id].iconSrc]),
+                    Text(dataController.user.activities[topList[x].id].name)
                   ],
                 ),
                 Text((topList[x].score * 100).toString().substring(0, 2) + "%")
@@ -153,9 +153,9 @@ class EvaluationTab extends StatelessWidget {
   List<_ActivityPair> _topActivitiesBy(
       BuildContext context, double Function(Entry) value, int count) {
     DataController dataController = Provider.of<DataController>(context);
-    Map<String, _ActivityPair> activities = {};
+    Map<int, _ActivityPair> activities = {};
     dataController.user.activities
-        .forEach((name, activity) => activities[name] = _ActivityPair(name));
+        .forEach((id, activity) => activities[id] = _ActivityPair(activity.id));
     dataController.user.entries.forEach((entry) {
       // calculate score and count of activities
       entry.activities.forEach((activity) {
@@ -183,9 +183,9 @@ class _PiePair {
 class _ActivityPair {
   double score = 0;
   int count = 0;
-  String name;
+  int id;
 
-  _ActivityPair(this.name);
+  _ActivityPair(this.id);
 }
 
 class _Title extends StatelessWidget {

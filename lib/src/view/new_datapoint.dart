@@ -117,7 +117,7 @@ class NewDatapoint extends StatelessWidget {
                   icon: Icon(Icons.arrow_forward, color: Colors.green),
                   onPressed: () {
                     dataController.addEntry(new Entry(
-                        List.of(controller.chosenActivities.map((e) => e.name)),
+                        List.of(controller.chosenActivities.map((a) => a.id)),
                         DateTime.now(),
                         controller.mood,
                         controller.productivity));
