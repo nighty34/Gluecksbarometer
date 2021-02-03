@@ -13,26 +13,29 @@ class ActivityDao implements Dao<int, Activity> {
   }
 
   @override
-  Future<List<Activity>> readAll({String filter, List<dynamic> args}) {
-    return DB().conn.then((c) => c
-        .query(_table, where: filter, whereArgs: args)
-        .then((maps) => List.of(maps.map((map) => Activity.fromMap(map)))));
+  Future<List<Activity>> readAll({String filter, List<dynamic> args}) async {
+    Database conn = await DB().conn;
+    List<Map<String, dynamic>> activities =
+        await conn.query(_table, where: filter, whereArgs: args);
+    return List.of(activities.map((map) => Activity.fromMap(map)));
   }
 
   @override
-  Future<int> insert(Activity value) {
-    return DB().conn.then((c) => c.insert(_table, value.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace));
+  Future<int> insert(Activity value) async {
+    Database conn = await DB().conn;
+    return conn.insert(_table, value.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   @override
-  update(Activity value) {
-    DB().conn.then((c) =>
-        c.update(_table, value.toMap(), where: "id=?", whereArgs: [value.id]));
+  update(Activity value) async {
+    Database conn = await DB().conn;
+    conn.update(_table, value.toMap(), where: "id=?", whereArgs: [value.id]);
   }
 
   @override
-  delete(int id) {
-    DB().conn.then((c) => c.delete(_table, where: "id=?", whereArgs: [id]));
+  delete(int id) async {
+    Database conn = await DB().conn;
+    conn.delete(_table, where: "id=?", whereArgs: [id]);
   }
 }
