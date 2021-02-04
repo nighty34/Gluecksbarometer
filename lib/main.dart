@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gluecks_barometer/src/controller/data_controller.dart';
+import 'package:gluecks_barometer/src/controller/evaluation_controller.dart';
 import 'package:gluecks_barometer/src/controller/new_activity_controller.dart';
 import 'package:gluecks_barometer/src/controller/new_datapoint_controller.dart';
 import 'package:gluecks_barometer/src/view/evaluation_tab.dart';
@@ -18,7 +19,8 @@ class Gluecksbarometer extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(create: (_) => DataController()),
           ChangeNotifierProvider(create: (_) => NewDatapointController()),
-          ChangeNotifierProvider(create: (_) => NewActivityController())
+          ChangeNotifierProvider(create: (_) => NewActivityController()),
+          ChangeNotifierProvider(create: (_) => EvaluationController())
         ],
         child: MaterialApp(
           home: Home(),
