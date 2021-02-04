@@ -52,64 +52,64 @@ class NewDatapoint extends StatelessWidget {
                             style: TextStyle(fontSize: 16)),
                         Container(
                             padding: EdgeInsets.all(20),
-                            height: 500,
                             width: 500,
                             child: GridView.builder(
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 4,
-                                        mainAxisSpacing: 5,
-                                        crossAxisSpacing: 5),
-                                itemCount:
-                                    dataController.user.activities.length + 1,
-                                itemBuilder: (con, x) {
-                                  if (x <
-                                      dataController.user.activities.length) {
-                                    Activity activity = dataController
-                                        .user.activities.values
-                                        .elementAt(x);
-                                    return TextButton(
-                                      style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  controller.chosenActivities
-                                                          .contains(activity)
-                                                      ? Colors.tealAccent
-                                                      : Colors.transparent)),
-                                      child: Column(
-                                        children: [
-                                          Icon(
-                                              dataController.activityIcons[
-                                                  activity.iconSrc],
-                                              color: Colors.black),
-                                          Text(activity.name,
-                                              maxLines: 1,
-                                              style: TextStyle(
-                                                  color: Colors.black))
-                                        ],
-                                      ),
-                                      onPressed: () => controller
-                                              .chosenActivities
-                                              .contains(activity)
-                                          ? controller
-                                              .removeChosenActivity(activity)
-                                          : controller
-                                              .addChosenActivity(activity),
-                                    );
-                                  } else {
-                                    return TextButton(
-                                        child: Column(children: [
-                                          Icon(Icons.add, color: Colors.green),
-                                          Text("")
-                                          // this is a hack in order to align the button with the others
-                                        ]),
-                                        onPressed: () => Navigator.push(
-                                            context,
-                                            new MaterialPageRoute(
-                                                builder: (_) =>
-                                                    NewActivity())));
-                                  }
-                                })),
+                              shrinkWrap: true,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 4,
+                                      mainAxisSpacing: 5,
+                                      crossAxisSpacing: 5),
+                              itemCount:
+                                  dataController.user.activities.length + 1,
+                              itemBuilder: (con, x) {
+                                if (x <
+                                    dataController.user.activities.length) {
+                                  Activity activity = dataController
+                                      .user.activities.values
+                                      .elementAt(x);
+                                  return TextButton(
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                controller.chosenActivities
+                                                        .contains(activity)
+                                                    ? Colors.tealAccent
+                                                    : Colors.transparent)),
+                                    child: Column(
+                                      children: [
+                                        Icon(
+                                            dataController.activityIcons[
+                                                activity.iconSrc],
+                                            color: Colors.black),
+                                        Text(activity.name,
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                                color: Colors.black))
+                                      ],
+                                    ),
+                                    onPressed: () => controller
+                                            .chosenActivities
+                                            .contains(activity)
+                                        ? controller
+                                            .removeChosenActivity(activity)
+                                        : controller
+                                            .addChosenActivity(activity),
+                                  );
+                                } else {
+                                  return TextButton(
+                                      child: Column(children: [
+                                        Icon(Icons.add, color: Colors.green),
+                                        Text("")
+                                        // this is a hack in order to align the button with the others
+                                      ]),
+                                      onPressed: () => Navigator.push(
+                                          context,
+                                          new MaterialPageRoute(
+                                              builder: (_) =>
+                                                  NewActivity())));
+                                }
+                              })),
                       ],
                     )),
               ),

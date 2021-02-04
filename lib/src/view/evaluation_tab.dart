@@ -197,6 +197,7 @@ class EvaluationTab extends StatelessWidget {
         activities[activity].score += value(entry);
       });
     });
+    activities.removeWhere((_, activity) => activity.count == 0);
     activities.forEach((name, activity) {
       activity.score = activity.score / activity.count; // score relative to activity count
     });
