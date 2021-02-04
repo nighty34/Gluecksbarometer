@@ -41,20 +41,17 @@ class EvaluationTab extends StatelessWidget {
     List<Entry> data = controller.getData(dataController);
     return Column(children: [
       Container(
-          child: DropdownButton<EvalTimespan>(
-        items: [
-          DropdownMenuItem(
-              child: Text("Letzte Woche"), value: EvalTimespan.WEEK),
-          DropdownMenuItem(
-              child: Text("Letzter Monat"), value: EvalTimespan.MONTH),
-          DropdownMenuItem(
-              child: Text("Letztes Jahr"), value: EvalTimespan.YEAR),
-          DropdownMenuItem(
-              child: Text("Seit Messbeginn"), value: EvalTimespan.ALL),
-        ],
-        onChanged: (to) => controller.timespan = to,
-        value: controller.timespan,
-      )),
+        child: DropdownButton<EvalTimespan>(
+          items: [
+            DropdownMenuItem(child: Text("Letzte Woche"), value: EvalTimespan.WEEK),
+            DropdownMenuItem(child: Text("Letzter Monat"), value: EvalTimespan.MONTH),
+            DropdownMenuItem(child: Text("Letztes Jahr"), value: EvalTimespan.YEAR),
+            DropdownMenuItem(child: Text("Seit Messbeginn"), value: EvalTimespan.ALL),
+          ],
+          onChanged: (to) => controller.timespan = to,
+          value: controller.timespan,
+        )
+      ),
       data.length > 0
           ? Expanded(child: buildCharts(context, data))
           : buildExcuse(context),
@@ -197,11 +194,11 @@ class EvaluationTab extends StatelessWidget {
       // calculate score and count of activities
       entry.activities.forEach((activity) {
         activities[activity].count += 1;
-        activities[activity].score = value(entry);
+        activities[activity].score += value(entry);
       });
     });
     activities.forEach((name, activity) {
-      activity.score /= activity.count; // score relative to activity count
+      activity.score = activity.score / activity.count; // score relative to activity count
     });
     List<_ActivityPair> top = List.of(activities.values);
     top.sort((a, b) => b.score.compareTo(a.score)); // Sort by score
@@ -233,8 +230,8 @@ class _Title extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
-      child: Text(_text, style: TextStyle(fontSize: 16)),
+      padding: EdgeInsets.all(20),
+      child: Text(_text, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
     );
   }
 }
