@@ -5,6 +5,7 @@ import 'package:gluecks_barometer/src/data/entry_dao.dart';
 import 'package:gluecks_barometer/src/model/activity.dart';
 import 'package:gluecks_barometer/src/model/entry.dart';
 import 'package:gluecks_barometer/src/model/user.dart';
+import 'package:gluecks_barometer/src/view/custom_icons.dart';
 
 class DataController extends ChangeNotifier {
   final Map<String, IconData> activityIcons = {
@@ -15,6 +16,33 @@ class DataController extends ChangeNotifier {
     "travel": Icons.airplanemode_active_rounded,
     "money": Icons.attach_money,
     "music": Icons.audiotrack,
+    "drive": Icons.directions_car_rounded,
+    "eat": Icons.restaurant,
+    "train": Icons.train,
+    "write": Icons.mode_edit,
+    "bank": CustomIcons.bank,
+    "briefcase": CustomIcons.briefcase,
+    "brush": CustomIcons.brush,
+    "building": CustomIcons.building,
+    "bullhorn": CustomIcons.bullhorn,
+    "code": CustomIcons.code,
+    "coffee": CustomIcons.coffee,
+    "comment": CustomIcons.comment_empty,
+    "planning": CustomIcons.drafting_compass,
+    "facebook": CustomIcons.facebook_squared,
+    "flask": CustomIcons.flask,
+    "headphones": CustomIcons.headphones,
+    "insta": CustomIcons.instagram,
+    "linkedin": CustomIcons.linkedin,
+    "pinterest": CustomIcons.pinterest,
+    "doctor": CustomIcons.stethoscope,
+    "swimming": CustomIcons.swimmer,
+    "table_tennis": CustomIcons.table_tennis,
+    "tree": CustomIcons.tree,
+    "trophy": CustomIcons.trophy,
+    "beach": CustomIcons.umbrella_beach,
+    "wikipedia": CustomIcons.wikipedia_w,
+    "youtube": CustomIcons.youtube_play,
   };
 
   User _user;

@@ -10,13 +10,6 @@ import 'package:gluecks_barometer/src/view/new_activity.dart';
 import 'package:provider/provider.dart';
 
 class NewDatapoint extends StatelessWidget {
-  final Map<String, IconData> myIconCollection = {
-    'favorite': Icons.favorite,
-    'home': Icons.home,
-    'android': Icons.android,
-    'album': Icons.album,
-    'ac_unit': Icons.ac_unit
-  };
 
   @override
   Widget build(BuildContext context) {

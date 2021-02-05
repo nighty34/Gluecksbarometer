@@ -6,6 +6,7 @@ import 'package:gluecks_barometer/src/model/activity.dart';
 import 'package:provider/provider.dart';
 
 class NewActivity extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     NewActivityController controller =
@@ -18,6 +19,7 @@ class NewActivity extends StatelessWidget {
       children: [
         Container(
           width: 500,
+          height: 500,
           child: GridView.builder(
             shrinkWrap: true,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),

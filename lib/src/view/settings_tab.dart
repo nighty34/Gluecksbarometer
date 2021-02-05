@@ -35,6 +35,7 @@ class SettingsTab extends StatelessWidget {
         Card(child: ListTile(
           title: _Title("Tips"),
           trailing: Switch(
+            activeColor: Theme.of(context).primaryColor,
             onChanged: (v) => controller.tipsEnabled = v,
             value: controller.settings.tipsEnabled,
           ),

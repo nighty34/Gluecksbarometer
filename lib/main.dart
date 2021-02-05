@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gluecks_barometer/src/controller/data_controller.dart';
 import 'package:gluecks_barometer/src/controller/evaluation_controller.dart';
 import 'package:gluecks_barometer/src/controller/new_activity_controller.dart';
@@ -48,6 +49,11 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SettingsController settingsController = Provider.of<SettingsController>(context);
+    SystemChrome.setSystemUIOverlayStyle(
+        settingsController.settings.theme == ThemeType.DARK ?
+            SystemUiOverlayStyle.dark.copyWith(statusBarColor: Theme.of(context).primaryColor)
+            : SystemUiOverlayStyle.light.copyWith(statusBarColor: Theme.of(context).primaryColor)
+    );
     return Scaffold(
       body: SafeArea(
         child: DefaultTabController(
@@ -58,7 +64,7 @@ class Home extends StatelessWidget {
                   indicatorColor: Colors.white,
                   tabs: [
                     Tab(icon: Icon(Icons.home)),
-                    Tab(icon: Icon(Icons.analytics_outlined))]
+                    Tab(icon: Icon(Icons.timeline))]
                     + (settingsController.settings.tipsEnabled ? [Tab(icon: Icon(Icons.lightbulb))] : []) +
                     [Tab(icon: Icon(Icons.settings))
                   ],
