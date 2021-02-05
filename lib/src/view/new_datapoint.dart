@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gluecks_barometer/src/controller/data_controller.dart';
+import 'package:gluecks_barometer/src/controller/new_activity_controller.dart';
 import 'package:gluecks_barometer/src/controller/new_datapoint_controller.dart';
 import 'package:gluecks_barometer/src/model/activity.dart';
 import 'package:gluecks_barometer/src/model/entry.dart';
@@ -20,8 +21,10 @@ class NewDatapoint extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DataController dataController = Provider.of<DataController>(context);
-    NewDatapointController controller =
-        Provider.of<NewDatapointController>(context);
+    NewDatapointController controller = Provider.of<NewDatapointController>(context);
+
+    final RenderBox overlay = Overlay.of(context).context.findRenderObject();
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -51,65 +54,19 @@ class NewDatapoint extends StatelessWidget {
                         Text("Was hast du heute gemacht?",
                             style: TextStyle(fontSize: 16)),
                         Container(
-                            padding: EdgeInsets.all(20),
-                            width: 500,
-                            child: GridView.builder(
-                              shrinkWrap: true,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 4,
-                                      mainAxisSpacing: 5,
-                                      crossAxisSpacing: 5),
-                              itemCount:
-                                  dataController.user.activities.length + 1,
-                              itemBuilder: (con, x) {
-                                if (x <
-                                    dataController.user.activities.length) {
-                                  Activity activity = dataController
-                                      .user.activities.values
-                                      .elementAt(x);
-                                  return TextButton(
-                                    style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                                controller.chosenActivities
-                                                        .contains(activity)
-                                                    ? Colors.tealAccent
-                                                    : Colors.transparent)),
-                                    child: Column(
-                                      children: [
-                                        Icon(
-                                            dataController.activityIcons[
-                                                activity.iconSrc],
-                                            color: Colors.black),
-                                        Text(activity.name,
-                                            maxLines: 1,
-                                            style: TextStyle(
-                                                color: Colors.black))
-                                      ],
-                                    ),
-                                    onPressed: () => controller
-                                            .chosenActivities
-                                            .contains(activity)
-                                        ? controller
-                                            .removeChosenActivity(activity)
-                                        : controller
-                                            .addChosenActivity(activity),
-                                  );
-                                } else {
-                                  return TextButton(
-                                      child: Column(children: [
-                                        Icon(Icons.add, color: Colors.green),
-                                        Text("")
-                                        // this is a hack in order to align the button with the others
-                                      ]),
-                                      onPressed: () => Navigator.push(
-                                          context,
-                                          new MaterialPageRoute(
-                                              builder: (_) =>
-                                                  NewActivity())));
-                                }
-                              })),
+                          padding: EdgeInsets.all(20),
+                          width: 500,
+                          child: GridView.builder(
+                            shrinkWrap: true,
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 4,
+                                    mainAxisSpacing: 5,
+                                    crossAxisSpacing: 5
+                            ),
+                            itemCount: dataController.user.activities.length + 1,
+                            itemBuilder: (con, x) => _buildActivityItem(con, overlay, x),
+                          )
+                        ),
                       ],
                     )),
               ),
@@ -129,5 +86,111 @@ class NewDatapoint extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _buildActivityItem(BuildContext context, RenderBox overlay, int x) {
+    DataController dataController = Provider.of<DataController>(context);
+    NewDatapointController controller = Provider.of<NewDatapointController>(context);
+    var tapPosition;
+
+    if (x < dataController.user.activities.length) {
+      Activity activity = dataController
+          .user.activities.values
+          .elementAt(x);
+      return GestureDetector(
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            color: controller.chosenActivities.contains(activity) ? Colors.white30 : Colors.transparent,
+          ),
+          padding: EdgeInsets.all(5),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                  dataController.activityIcons[activity.iconSrc]
+              ),
+              Text(
+                activity.name,
+                maxLines: 1,
+              )
+            ],
+          )
+        ),
+        onTapDown: (details) => tapPosition = details.globalPosition,
+        onTap: () => controller
+            .chosenActivities
+            .contains(activity)
+            ? controller
+            .removeChosenActivity(activity)
+            : controller
+            .addChosenActivity(activity),
+        onLongPress: () => showMenu(
+          position: RelativeRect.fromRect(
+              tapPosition & const Size(50, 50),
+              Offset.zero & overlay.size
+          ),
+          context: context,
+          items: <PopupMenuItem>[
+            PopupMenuItem(
+                child: TextButton(
+                  child: Row(children: [
+                    Icon(Icons.create),
+                    Text("Editieren..."),
+                  ]),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    NewActivityController activityController = Provider.of<NewActivityController>(context, listen: false);
+                    activityController.updateMode(activity.id);
+                    activityController.name = activity.name;
+                    activityController.icon = activity.iconSrc;
+                    Navigator.push(context, new MaterialPageRoute(builder: (_) => NewActivity()));
+                  },
+                )
+            ),
+            PopupMenuItem(
+                child: TextButton(
+                  child: Row(children: [
+                    Icon(Icons.delete),
+                    Text("Löschen..."),
+                  ]),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    showDialog(context: context, builder: (_) => AlertDialog(
+                      title: Text("'${activity.name}' löschen?"),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text("Abbrechen"),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                        TextButton(
+                          child: Text("Löschen"),
+                          onPressed: () {
+                            dataController.removeActivity(activity.id);
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
+                    ));
+                  },
+                )
+            ),
+          ],
+        ),
+      );
+    } else {
+      return TextButton(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.add, color: Colors.green),
+            ]
+          ),
+          onPressed: () => Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (_) =>
+                      NewActivity())));
+    }
   }
 }

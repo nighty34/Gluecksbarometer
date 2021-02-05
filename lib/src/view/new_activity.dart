@@ -64,8 +64,11 @@ class NewActivity extends StatelessWidget {
               IconButton(
                   icon: Icon(Icons.arrow_forward, color: Colors.green),
                   onPressed: () {
-                    dataController.addActivity(
-                        new Activity(controller.name, controller.icon));
+                    if (controller.isUpdating()) {
+                      dataController.updateActivity(new Activity.identified(controller.id, controller.name, controller.icon));
+                    } else {
+                      dataController.addActivity(new Activity(controller.name, controller.icon));
+                    }
                     controller.reset();
                     Navigator.pop(context);
                   })

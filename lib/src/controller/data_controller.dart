@@ -41,6 +41,19 @@ class DataController extends ChangeNotifier {
     notifyListeners();
   }
 
+  removeActivity(int id) async {
+    ActivityDao().delete(id);
+    _user.activities.removeWhere((key, _) => key == id);
+    _user.entries.forEach((entry) => entry.activities.removeWhere((key) => key == id));
+    notifyListeners();
+  }
+
+  updateActivity(Activity activity) async {
+    ActivityDao().update(activity);
+    _user.activities[activity.id] = activity;
+    notifyListeners();
+  }
+
   addEntry(Entry entry) async {
     int id = await EntryDao().insert(entry);
     entry.id = id;
