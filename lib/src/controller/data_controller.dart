@@ -84,8 +84,14 @@ class DataController extends ChangeNotifier {
 
   addEntry(Entry entry) async {
     int id = await EntryDao().insert(entry);
-    entry.id = id;
-    _user.entries.add(entry);
+    entry.id = id ;
+    _user.entries.insert(0, entry);
+    notifyListeners();
+  }
+
+  removeEntry(int index) async {
+    EntryDao().delete(_user.entries[index].id);
+    _user.entries.removeAt(index);
     notifyListeners();
   }
 }
