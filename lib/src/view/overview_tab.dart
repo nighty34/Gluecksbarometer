@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:gluecks_barometer/src/controller/data_controller.dart';
 import 'package:gluecks_barometer/src/controller/settings_controller.dart';
 import 'package:gluecks_barometer/src/model/entry.dart';
 import 'package:gluecks_barometer/src/view/mood_rating_bar.dart';
 import 'package:gluecks_barometer/src/view/new_datapoint.dart';
+import 'package:gluecks_barometer/src/view/welcome_screen.dart';
 import 'package:provider/provider.dart';
 
 class OverviewTab extends StatelessWidget {
@@ -12,6 +14,10 @@ class OverviewTab extends StatelessWidget {
   Widget build(BuildContext context) {
     SettingsController settingsController = Provider.of<SettingsController>(context);
     DataController dataController = Provider.of<DataController>(context);
+
+
+    SchedulerBinding.instance.addPostFrameCallback((_) => checkForName(settingsController, context));
+
     return Center(
       child: ListView(
         children: <Widget>[
@@ -116,5 +122,14 @@ class OverviewTab extends StatelessWidget {
     }
 
     return "${weekday}, ${dateTime.hour}:${minute}";
+  }
+
+
+  void checkForName(SettingsController settingsController, BuildContext context){
+    if(settingsController.settings.name.isEmpty){
+      print("No Name");
+      Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => WelcomeScreen()));
+    }
   }
 }

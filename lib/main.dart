@@ -10,6 +10,7 @@ import 'package:gluecks_barometer/src/view/evaluation_tab.dart';
 import 'package:gluecks_barometer/src/view/overview_tab.dart';
 import 'package:gluecks_barometer/src/view/settings_tab.dart';
 import 'package:gluecks_barometer/src/view/tips_tab.dart';
+import 'package:gluecks_barometer/src/view/welcome_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -49,6 +50,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SettingsController settingsController = Provider.of<SettingsController>(context);
+
     SystemChrome.setSystemUIOverlayStyle(
         settingsController.settings.theme == ThemeType.DARK ?
             SystemUiOverlayStyle.dark.copyWith(statusBarColor: Theme.of(context).primaryColor)
