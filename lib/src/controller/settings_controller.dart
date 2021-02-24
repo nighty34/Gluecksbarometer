@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gluecks_barometer/src/data/settings_dao.dart';
 import 'package:gluecks_barometer/src/model/settings.dart';
+import 'package:gluecks_barometer/src/view/reminder_notification.dart';
 
 class SettingsController extends ChangeNotifier {
 
@@ -16,7 +17,7 @@ class SettingsController extends ChangeNotifier {
         accentColor: Colors.yellowAccent)
   };
 
-  Settings _settings = Settings("MENSCH", ThemeType.DARK, false);
+  Settings _settings = Settings("Mensch", ThemeType.DARK, false, true, TimeOfDay(hour: 19, minute: 0));
   Settings get settings => _settings;
 
   SettingsController() {
@@ -25,6 +26,8 @@ class SettingsController extends ChangeNotifier {
 
   _fillData() async {
     _settings = await SettingsDao().read("user");
+    _updateNotification();
+    notifyListeners();
   }
 
   ThemeData getThemeData(ThemeType type) {
@@ -47,5 +50,30 @@ class SettingsController extends ChangeNotifier {
     _settings.tipsEnabled = value;
     SettingsDao().update(_settings);
     notifyListeners();
+  }
+
+  set reminderEnabled(bool value) {
+    _settings.reminderEnabled = value;
+    SettingsDao().update(_settings);
+    notifyListeners();
+    _updateNotification();
+  }
+
+  set reminderTime(TimeOfDay value) {
+    _settings.reminderTime = value;
+    SettingsDao().update(_settings);
+    notifyListeners();
+    _updateNotification();
+  }
+
+  _updateNotification() async {
+    ReminderNotification().unscheduleNotification();
+    if (_settings.reminderEnabled) {
+      ReminderNotification().scheduleNotification(
+          _settings.reminderTime,
+          "Erinnerung",
+          "Hallo " + _settings.name + ", willst du einen Eintrag verfassen?"
+      );
+    }
   }
 }

@@ -12,8 +12,12 @@ import 'package:gluecks_barometer/src/view/settings_tab.dart';
 import 'package:gluecks_barometer/src/view/tips_tab.dart';
 import 'package:gluecks_barometer/src/view/welcome_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 void main() {
+  tz.initializeTimeZones();
+  tz.setLocalLocation(tz.getLocation("Europe/Zurich"));
   runApp(Gluecksbarometer());
 }
 

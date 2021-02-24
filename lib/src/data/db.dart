@@ -33,11 +33,10 @@ class DB {
     db.execute("CREATE TABLE activities(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, iconSrc TEXT)");
     db.execute("CREATE TABLE entries(id INTEGER PRIMARY KEY AUTOINCREMENT, entryDate DATETIME, mood INTEGER, productivity INTEGER)");
     db.execute("CREATE TABLE entries_activities(e_id INTEGER REFERENCES entries(id), a_id INTEGER REFERENCES activities(id), PRIMARY KEY (e_id, a_id))");
-    db.execute("CREATE TABLE settings(stype TEXT PRIMARY KEY, name TEXT, themeType INTEGER, tipsEnabled BOOLEAN)");
+    db.execute("CREATE TABLE settings(stype TEXT PRIMARY KEY, name TEXT, themeType INTEGER, tipsEnabled INTEGER, reminderEnabled INTEGER, reminderTime DATETIME)");
 
-    db.execute("INSERT INTO settings VALUES ('default', 'MENSCH', 0, 1)");
-    //db.execute("INSERT INTO settings VALUES ('user', 'MENSCH', 0, 1)");
-
+    db.execute("INSERT INTO settings VALUES ('default', 'Mensch', 0, 1, 1, '1970-01-01 19:00:00')");
+    db.execute("INSERT INTO settings VALUES ('user', 'Mensch', 0, 1, 1, '1970-01-01 19:00:00')");
   }
 
   Future<Database> get conn async => await _conn;

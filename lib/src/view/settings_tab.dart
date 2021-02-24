@@ -39,6 +39,31 @@ class SettingsTab extends StatelessWidget {
             onChanged: (v) => controller.tipsEnabled = v,
             value: controller.settings.tipsEnabled,
           ),
+        )),
+        Card(child: ListTile(
+          title: _Title("Erinnerungen"),
+          trailing: Switch(
+            activeColor: Theme.of(context).primaryColor,
+            onChanged: (v) => controller.reminderEnabled = v,
+            value: controller.settings.reminderEnabled,
+          ),
+        )),
+        Card(child: ListTile(
+          title: _Title("Erinnerungszeitpunkt"),
+          trailing: InkWell(
+            child: Container(
+              padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
+              child: Text(controller.settings.reminderTime.hour.toString() + ":" +
+                (controller.settings.reminderTime.minute < 10 ? "0" : "") +
+                controller.settings.reminderTime.minute.toString())
+            ),
+            onTap: () async {
+              TimeOfDay picked = await showTimePicker(context: context, initialTime: controller.settings.reminderTime);
+              if (picked != null) { // if the user cancels, the returned value is null.
+                controller.reminderTime = picked;
+              }
+            },
+          ),
         ))
       ],
     );
