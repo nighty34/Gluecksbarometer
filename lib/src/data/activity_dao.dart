@@ -6,6 +6,7 @@ import 'dao.dart';
 
 class ActivityDao implements Dao<int, Activity> {
   final String _table = "activities";
+  final String _entriesTable = "entries_activities";
 
   @override
   Future<Activity> read(int id) {
@@ -36,6 +37,7 @@ class ActivityDao implements Dao<int, Activity> {
   @override
   delete(int id) async {
     Database conn = await DB().conn;
+    conn.delete(_entriesTable, where: "a_id=?", whereArgs: [id]);
     conn.delete(_table, where: "id=?", whereArgs: [id]);
   }
 }

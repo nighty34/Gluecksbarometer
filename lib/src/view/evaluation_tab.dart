@@ -1,7 +1,9 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:gluecks_barometer/src/controller/data_controller.dart';
+import 'package:gluecks_barometer/src/controller/evaluation_controller.dart';
 import 'package:gluecks_barometer/src/model/entry.dart';
 import 'package:gluecks_barometer/src/model/mood.dart';
 import 'package:provider/provider.dart';
@@ -23,15 +25,37 @@ class EvaluationTab extends StatelessWidget {
     Mood.very_satisfied: charts.MaterialPalette.green.makeShades(2)[0]
   };
 
+  final Map<Mood, String> _moodLabels = {
+    Mood.very_dissatisfied: /*"🙁"*/ "D:",
+    Mood.dissatisfied: /*"😕"*/ ":(",
+    Mood.neutral: /*"😐"*/ ":/",
+    Mood.satisfied: /*"🙂"*/ ":)",
+    Mood.very_satisfied: /*"😀"*/ ":D",
+  };
+
   @override
   Widget build(BuildContext context) {
+    EvaluationController controller =
+        Provider.of<EvaluationController>(context);
     DataController dataController = Provider.of<DataController>(context);
-
-    return Center(
-      child: dataController.user.entries.length > 0
-          ? buildCharts(context)
+    List<Entry> data = controller.getData(dataController);
+    return Column(children: [
+      Container(
+        child: DropdownButton<EvalTimespan>(
+          items: [
+            DropdownMenuItem(child: Text("Letzte Woche"), value: EvalTimespan.WEEK),
+            DropdownMenuItem(child: Text("Letzter Monat"), value: EvalTimespan.MONTH),
+            DropdownMenuItem(child: Text("Letztes Jahr"), value: EvalTimespan.YEAR),
+            DropdownMenuItem(child: Text("Seit Messbeginn"), value: EvalTimespan.ALL),
+          ],
+          onChanged: (to) => controller.timespan = to,
+          value: controller.timespan,
+        )
+      ),
+      data.length > 0
+          ? Expanded(child: buildCharts(context, data))
           : buildExcuse(context),
-    );
+    ]);
   }
 
   Widget buildExcuse(BuildContext context) {
@@ -44,64 +68,73 @@ class EvaluationTab extends StatelessWidget {
     );
   }
 
-  Widget buildCharts(BuildContext context) {
-    DataController dataController = Provider.of<DataController>(context);
-
+  Widget buildCharts(BuildContext context, List<Entry> data) {
     List<charts.Series<_PiePair, int>> moodSeries = [
       charts.Series<_PiePair, int>(
-        data: dataController.user.entries
-            .fold(List.of(_initialPie.map((e) => _PiePair(e.mood, e.count))),
-                (pie, entry) {
-          if (entry.entryDate
-              .isAfter(DateTime.now().subtract(Duration(days: 30)))) {
-            pie[entry.mood.index].count += 1;
-          }
-          return pie;
-        }),
-        colorFn: (_PiePair p, _) => _moodColors[p.mood],
+          data: data
+              .fold(List.of(_initialPie.map((e) => _PiePair(e.mood, e.count))),
+                  (pie, entry) {
+            if (entry.entryDate
+                .isAfter(DateTime.now().subtract(Duration(days: 30)))) {
+              pie[entry.mood.index].count += 1;
+            }
+            return pie;
+          }),
+          colorFn: (_PiePair p, _) => _moodColors[p.mood],
         domainFn: (_PiePair p, _) => p.mood.index,
         measureFn: (_PiePair p, _) => p.count,
-      )
+          labelAccessorFn: (_PiePair p, _) => _moodLabels[p.mood])
     ];
 
     List<charts.Series<_PiePair, int>> productivitySeries = [
       charts.Series<_PiePair, int>(
-        data: dataController.user.entries
-            .fold(List.of(_initialPie.map((e) => _PiePair(e.mood, e.count))),
-                (pie, entry) {
-          if (entry.entryDate
-              .isAfter(DateTime.now().subtract(Duration(days: 30)))) {
-            pie[entry.productivity.index].count += 1;
-          }
-          return pie;
-        }),
-        colorFn: (_PiePair p, _) => _moodColors[p.mood],
-        domainFn: (_PiePair p, _) => p.mood.index,
-        measureFn: (_PiePair p, _) => p.count,
-      )
+          data: data
+              .fold(List.of(_initialPie.map((e) => _PiePair(e.mood, e.count))),
+                  (pie, entry) {
+            if (entry.entryDate
+                .isAfter(DateTime.now().subtract(Duration(days: 30)))) {
+              pie[entry.productivity.index].count += 1;
+            }
+            return pie;
+          }),
+          colorFn: (_PiePair p, _) => _moodColors[p.mood],
+          domainFn: (_PiePair p, _) => p.mood.index,
+          measureFn: (_PiePair p, _) => p.count,
+          labelAccessorFn: (_PiePair p, _) => _moodLabels[p.mood])
     ];
 
     List<_ActivityPair> topMood = _topActivitiesBy(
-        context, (entry) => entry.mood.index.floorToDouble() * .25, 5);
-    List<_ActivityPair> topProd = _topActivitiesBy(
-        context, (entry) => entry.productivity.index.floorToDouble() * .25, 5);
+        context, (entry) => entry.mood.index.floorToDouble() * .25, 5, data);
+    List<_ActivityPair> topProd = _topActivitiesBy(context,
+        (entry) => entry.productivity.index.floorToDouble() * .25, 5, data);
+
+    var chart = (series) => charts.PieChart(
+          series,
+          defaultRenderer: new charts.ArcRendererConfig(
+              arcRatio: .6,
+              arcRendererDecorators: [
+                new charts.ArcLabelDecorator(
+                  labelPosition: charts.ArcLabelPosition.inside,
+                )
+              ]),
+        );
 
     return ListView(
       children: [
         Card(
             child: Column(children: [
-          _Title("Gefühlslage des letzten Monats"),
+          _Title("Gefühlslage"),
           ConstrainedBox(
               constraints: BoxConstraints(maxHeight: 200, maxWidth: 200),
-              child: charts.PieChart(moodSeries)),
+              child: chart(moodSeries)),
         ])),
         Card(
             child: Column(
           children: [
-            _Title("Produktivität des letzten Monats"),
+            _Title("Produktivität"),
             ConstrainedBox(
                 constraints: BoxConstraints(maxHeight: 200, maxWidth: 200),
-                child: charts.PieChart(productivitySeries))
+                child: chart(productivitySeries))
           ],
         )),
         Card(
@@ -127,12 +160,13 @@ class EvaluationTab extends StatelessWidget {
     return ListView.builder(
         shrinkWrap: true,
         itemCount: 5,
+        physics: NeverScrollableScrollPhysics(),
         itemBuilder: (con, x) {
           if (topList.length > x) {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.of([
-                Text((x + 1).toString() + "."),
+                Text("${x + 1}."),
                 Column(
                   children: [
                     Icon(dataController.activityIcons[
@@ -140,7 +174,7 @@ class EvaluationTab extends StatelessWidget {
                     Text(dataController.user.activities[topList[x].id].name)
                   ],
                 ),
-                Text((topList[x].score * 100).toString().substring(0, 2) + "%")
+                Text("${(topList[x].score * 100).toStringAsFixed(0)}%")
               ].map((e) => Container(
                   padding: EdgeInsets.fromLTRB(40, 8, 40, 8), child: e))),
             );
@@ -150,21 +184,22 @@ class EvaluationTab extends StatelessWidget {
         });
   }
 
-  List<_ActivityPair> _topActivitiesBy(
-      BuildContext context, double Function(Entry) value, int count) {
+  List<_ActivityPair> _topActivitiesBy(BuildContext context,
+      double Function(Entry) value, int count, List<Entry> data) {
     DataController dataController = Provider.of<DataController>(context);
     Map<int, _ActivityPair> activities = {};
     dataController.user.activities
         .forEach((id, activity) => activities[id] = _ActivityPair(activity.id));
-    dataController.user.entries.forEach((entry) {
+    data.forEach((entry) {
       // calculate score and count of activities
       entry.activities.forEach((activity) {
         activities[activity].count += 1;
-        activities[activity].score = value(entry);
+        activities[activity].score += value(entry);
       });
     });
+    activities.removeWhere((_, activity) => activity.count == 0);
     activities.forEach((name, activity) {
-      activity.score /= activity.count; // score relative to activity count
+      activity.score = activity.score / activity.count; // score relative to activity count
     });
     List<_ActivityPair> top = List.of(activities.values);
     top.sort((a, b) => b.score.compareTo(a.score)); // Sort by score
@@ -196,8 +231,8 @@ class _Title extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
-      child: Text(_text, style: TextStyle(fontSize: 16)),
+      padding: EdgeInsets.all(20),
+      child: Text(_text, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
     );
   }
 }
