@@ -5,12 +5,12 @@ import 'package:gluecks_barometer/src/controller/evaluation_controller.dart';
 import 'package:gluecks_barometer/src/controller/new_activity_controller.dart';
 import 'package:gluecks_barometer/src/controller/new_datapoint_controller.dart';
 import 'package:gluecks_barometer/src/controller/settings_controller.dart';
+import 'package:gluecks_barometer/src/controller/tips_controller.dart';
 import 'package:gluecks_barometer/src/model/settings.dart';
 import 'package:gluecks_barometer/src/view/evaluation_tab.dart';
 import 'package:gluecks_barometer/src/view/overview_tab.dart';
 import 'package:gluecks_barometer/src/view/settings_tab.dart';
 import 'package:gluecks_barometer/src/view/tips_tab.dart';
-import 'package:gluecks_barometer/src/view/welcome_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -30,6 +30,7 @@ class Gluecksbarometer extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => NewDatapointController()),
           ChangeNotifierProvider(create: (_) => NewActivityController()),
           ChangeNotifierProvider(create: (_) => EvaluationController()),
+          ChangeNotifierProvider(create: (_) => TipsController()),
         ],
         child: ChangeNotifierProvider(
             create: (context) => SettingsController(),
