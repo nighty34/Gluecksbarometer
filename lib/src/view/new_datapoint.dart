@@ -94,7 +94,7 @@ class NewDatapoint extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(5)),
-            color: controller.chosenActivities.contains(activity) ? Colors.white12 : Colors.transparent,
+            color: controller.chosenActivities.contains(activity) ? Colors.grey: Colors.transparent,
           ),
           padding: EdgeInsets.all(5),
           child: Column(
