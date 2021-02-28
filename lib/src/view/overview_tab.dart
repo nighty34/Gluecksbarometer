@@ -78,7 +78,7 @@ class OverviewTab extends StatelessWidget {
                              TextButton(
                                child: Text("Löschen"),
                                onPressed: () {
-                                 dataController.removeEntry(x);
+                                 dataController.removeEntry(x-1);
                                  Navigator.pop(context);
                                },
                              )

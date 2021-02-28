@@ -47,6 +47,7 @@ class NewDatapoint extends StatelessWidget {
                         Text("Was hast du heute gemacht?",
                             style: TextStyle(fontSize: 16)),
                         Container(
+                          constraints: BoxConstraints.tightForFinite(height: 300),
                           padding: EdgeInsets.all(20),
                           width: 500,
                           child: GridView.builder(
@@ -81,7 +82,7 @@ class NewDatapoint extends StatelessWidget {
     );
   }
 
-  _buildActivityItem(BuildContext context, RenderBox overlay, int x) {
+  Widget _buildActivityItem(BuildContext context, RenderBox overlay, int x) {
     DataController dataController = Provider.of<DataController>(context);
     NewDatapointController controller = Provider.of<NewDatapointController>(context);
     var tapPosition;
@@ -185,5 +186,17 @@ class NewDatapoint extends StatelessWidget {
                   builder: (_) =>
                       NewActivity())));
     }
+  }
+
+  double _getActionItemSize() {
+    return Container(
+      padding: EdgeInsets.all(5),
+      child: Column(
+        children: [
+          Icon(Icons.height),
+          Text("Messaktion")
+        ],
+      ),
+    ).createElement().size.height;
   }
 }

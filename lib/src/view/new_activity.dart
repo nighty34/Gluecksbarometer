@@ -66,6 +66,18 @@ class NewActivity extends StatelessWidget {
               IconButton(
                   icon: Icon(Icons.arrow_forward, color: Colors.green),
                   onPressed: () {
+                    // check if the name has not been defined for the activity
+                    if (controller.name.isEmpty) {
+                      _showWarning(context, "Bitte gib einen Namen an.");
+                      return;
+                    }
+
+                    // check if there is already an activity with this name
+                    if (dataController.user.activities.values.any((a) => a.name == controller.name)) {
+                      _showWarning(context, "Eine Aktion mit diesem Namen existiert schon. Bitte wähle einen anderen Namen.");
+                      return;
+                    }
+
                     if (controller.isUpdating()) {
                       dataController.updateActivity(new Activity.identified(controller.id, controller.name, controller.icon));
                     } else {
@@ -78,6 +90,21 @@ class NewActivity extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  _showWarning(BuildContext context, String text) {
+    showDialog(
+      context: context,
+      builder: (con) => AlertDialog(
+        title: Text(text),
+        actions: [
+          TextButton(
+            child: Text("Ok"),
+            onPressed: () => Navigator.pop(context),
+          )
+        ],
+      )
     );
   }
 }

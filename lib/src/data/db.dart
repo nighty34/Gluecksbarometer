@@ -57,8 +57,8 @@ class DB {
     db.execute("CREATE TABLE settings(stype TEXT PRIMARY KEY, name TEXT, themeType INTEGER, tipsEnabled INTEGER, reminderEnabled INTEGER, reminderTime DATETIME)");
     db.execute("CREATE TABLE tips(id INTEGER PRIMARY KEY AUTOINCREMENT, text TEXT, author TEXT, shown DATETIME, saved INTEGER)");
 
-    db.execute("INSERT INTO settings VALUES ('default', 'Mensch', 0, 1, 1, '1970-01-01 19:00:00')");
-    db.execute("INSERT INTO settings VALUES ('user', 'Mensch', 0, 1, 1, '1970-01-01 19:00:00')");
+    db.execute("INSERT INTO settings VALUES ('default', 'Mensch', 0, 1, 1, '${DateTime(1970, 1, 1, 19)}')");
+    db.execute("INSERT INTO settings VALUES ('user', 'Mensch', 0, 1, 1, '${DateTime(1970, 1, 1, 19)}')");
 
     // save all predefined quotes
     for (int i = 0; i < quotes.length; i += 2) {
