@@ -4,7 +4,9 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:gluecks_barometer/src/data/tips_dao.dart';
 import 'package:gluecks_barometer/src/model/quote.dart';
+import 'package:gluecks_barometer/src/view/tips_tab.dart';
 
+/// Controller for the [TipsTab].
 class TipsController extends ChangeNotifier {
 
   List<Quote> _savedQuotes;
@@ -36,6 +38,9 @@ class TipsController extends ChangeNotifier {
 
    */
 
+  /// Update a quote
+  ///
+  /// Updates the local list of saved quotes and the db entry
   updateQuote(Quote quote) async {
 
     bool containedInSaved = _savedQuotes.map((q) => q.id).contains(quote.id);
@@ -64,6 +69,7 @@ class TipsController extends ChangeNotifier {
   }
   */
 
+  /// Fetch a random, not-saved quote
   Future<Quote> randomQuote() async {
     /*
     HttpClientRequest request = await HttpClient().getUrl(Uri.parse("https://api.paperquotes.com/quotes?tags=motivation&language=de&limit=1"));
@@ -85,6 +91,7 @@ class TipsController extends ChangeNotifier {
     return notSaved[Random().nextInt(notSaved.length)];
   }
 
+  /// Fetch the quote shown to the user today
   _fetchTodaysQuote() async {
     List<Quote> todays = await TipsDao().readAll(filter: "shown >= date('now', 'start of day')");
     if (todays.length > 0) {

@@ -5,14 +5,17 @@ import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+/// Utility class for interacting with the local SQLite db
 class DB {
 
-  // there does not seem to be any good web api for requesting german motivational quotes.
-  // The only one I could find was paperquotes.com, but it provided english quotes regardless of
-  // the language requested, despite it saying that it supported english, german and 13 other languages.
-  // So this is the solution I've settled with (I'm sorry).
-  // I have these quotes from https://www.ausdauerblog.de/zitate-motivation/
-  static final List<String> quotes = [
+  /// List of quotes.
+  ///
+  /// There does not seem to be any good web api for requesting german motivational quotes.
+  /// The only one I could find was paperquotes.com, but it provided english quotes regardless of
+  /// the language requested, despite it saying that it supported english, german and 13 other languages.
+  /// So this is the solution I've settled with (I'm sorry).
+  /// I have these quotes from https://www.ausdauerblog.de/zitate-motivation/
+  static final List<String> _quotes = [
     "Unbekannt", "Es ist nicht wichtig, wie groß der erste Schritt ist, sondern in welche Richtung er geht.",
     "Marquise du Deffand", "Die Entfernung ist unwichtig. Nur der erste Schritt ist wichtig.",
     "Publilius Syrus", "Niemand weiß, was er kann, bis er es probiert hat.",
@@ -61,8 +64,8 @@ class DB {
     db.execute("INSERT INTO settings VALUES ('user', 'Mensch', 0, 1, 1, '${DateTime(1970, 1, 1, 19)}')");
 
     // save all predefined quotes
-    for (int i = 0; i < quotes.length; i += 2) {
-      db.execute("INSERT INTO tips VALUES (${(i/2).ceil().toString()}, '${quotes[i+1]}', '${quotes[i]}', '${DateTime(1970)}', 0)");
+    for (int i = 0; i < _quotes.length; i += 2) {
+      db.execute("INSERT INTO tips VALUES (${(i/2).ceil().toString()}, '${_quotes[i+1]}', '${_quotes[i]}', '${DateTime(1970)}', 0)");
     }
   }
 

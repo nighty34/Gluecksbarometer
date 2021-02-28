@@ -4,6 +4,7 @@ import 'package:gluecks_barometer/src/controller/settings_controller.dart';
 import 'package:gluecks_barometer/src/model/settings.dart';
 import 'package:provider/provider.dart';
 
+/// Tab for letting the user change their settings
 class SettingsTab extends StatelessWidget {
 
   @override
@@ -70,6 +71,7 @@ class SettingsTab extends StatelessWidget {
   }
 }
 
+/// Title for a setting
 class _Title extends StatelessWidget {
   final String _text;
 

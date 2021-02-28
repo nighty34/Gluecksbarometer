@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gluecks_barometer/src/model/mood.dart';
 
+/// A bar with five different possibilities for mood, according to the
+/// [Mood] enum.
 // ignore: must_be_immutable
 class MoodRatingBar extends StatelessWidget {
 
@@ -24,6 +26,7 @@ class MoodRatingBar extends StatelessWidget {
     );
   }
 
+  /// Get the icon for a specified [rating]
   static Icon getIcon(int rating) {
     switch (rating) {
       case 0:

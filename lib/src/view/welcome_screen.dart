@@ -1,12 +1,11 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gluecks_barometer/main.dart';
 import 'package:gluecks_barometer/src/controller/data_controller.dart';
-import 'package:gluecks_barometer/src/controller/new_datapoint_controller.dart';
 import 'package:gluecks_barometer/src/controller/settings_controller.dart';
 import 'package:provider/provider.dart';
 
+/// Welcome screen (currently not in use)
 class WelcomeScreen extends StatelessWidget {
 
   @override

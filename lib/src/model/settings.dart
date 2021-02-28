@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
+/// A list of theme types
 enum ThemeType {
   SYSTEM_DEFAULT, DARK, LIGHT
 }
 
+/// A settings instance. It saves the users settings.
 class Settings {
 
+  /// The settings type. This could, for example be 'default' or 'user'
   String stype;
   String name;
   ThemeType theme;
@@ -16,8 +19,11 @@ class Settings {
   Settings(this.name, this.theme, this.tipsEnabled, this.reminderEnabled, this.reminderTime) {
     stype = "user";
   }
+
+  /// Create a settings instance with the id given
   Settings.identified(this.stype, this.name, this.theme, this.tipsEnabled, this.reminderEnabled, this.reminderTime);
 
+  /// Create a settings instance from a [map]
   Settings.fromMap(Map<String, dynamic> map) {
     this.stype = map["stype"];
     this.name = map["name"];
@@ -34,6 +40,7 @@ class Settings {
     this.reminderTime = TimeOfDay.fromDateTime(DateTime.parse(map["reminderTime"]));
   }
 
+  /// Create a map in the format accepted by [Settings.fromMap]
   Map<String, dynamic> toMap() {
     int _theme;
     switch (theme) {

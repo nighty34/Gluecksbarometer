@@ -4,6 +4,7 @@ import 'package:gluecks_barometer/src/controller/tips_controller.dart';
 import 'package:gluecks_barometer/src/model/quote.dart';
 import 'package:provider/provider.dart';
 
+/// Tab with tips in the form of daily quotes that the user can add to their favorite list.
 class TipsTab extends StatelessWidget {
 
   @override
@@ -24,6 +25,7 @@ class TipsTab extends StatelessWidget {
     );
   }
 
+  /// Build a quote card, given the [quote]
   Widget _buildQuote(TipsController controller, Quote quote) {
     return Card(
       child: Column(

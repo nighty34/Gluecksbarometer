@@ -8,7 +8,12 @@ import 'package:gluecks_barometer/src/model/entry.dart';
 import 'package:gluecks_barometer/src/model/mood.dart';
 import 'package:provider/provider.dart';
 
+/// A tab for displaying user data evaluation.
+///
+/// This evaluation includes a pie chart of average mood, productivity
+/// and a list of top activities for mood and productivity
 class EvaluationTab extends StatelessWidget {
+
   final List<_PiePair> _initialPie = [
     _PiePair(Mood.very_dissatisfied, 0),
     _PiePair(Mood.dissatisfied, 0),
@@ -58,6 +63,7 @@ class EvaluationTab extends StatelessWidget {
     ]);
   }
 
+  /// Build a placeholder to be shown if there is no data to be evaluated
   Widget buildExcuse(BuildContext context) {
     return Card(
       child: Container(
@@ -68,6 +74,7 @@ class EvaluationTab extends StatelessWidget {
     );
   }
 
+  /// Build pie charts for mood and productivity given the user data
   Widget buildCharts(BuildContext context, List<Entry> data) {
     List<charts.Series<_PiePair, int>> moodSeries = [
       charts.Series<_PiePair, int>(
@@ -155,6 +162,7 @@ class EvaluationTab extends StatelessWidget {
     );
   }
 
+  /// Get a list with top activities by [ActivityPair] score.
   ListView _topActivityList(BuildContext context, List<_ActivityPair> topList) {
     DataController dataController = Provider.of<DataController>(context);
     return ListView.builder(
@@ -184,6 +192,10 @@ class EvaluationTab extends StatelessWidget {
         });
   }
 
+  /// Get a list of top activities, ordered by some [value] function.
+  ///
+  /// Accepts the build [context], the [value] function, the top [count]
+  /// (e.g. top 5) and some entries as data
   List<_ActivityPair> _topActivitiesBy(BuildContext context,
       double Function(Entry) value, int count, List<Entry> data) {
     DataController dataController = Provider.of<DataController>(context);
@@ -208,6 +220,7 @@ class EvaluationTab extends StatelessWidget {
   }
 }
 
+/// Pair to help evaluating pie chart data
 class _PiePair {
   Mood mood;
   int count;
@@ -215,6 +228,7 @@ class _PiePair {
   _PiePair(this.mood, this.count);
 }
 
+/// Pair to help evaluating top activity data
 class _ActivityPair {
   double score = 0;
   int count = 0;
@@ -223,6 +237,7 @@ class _ActivityPair {
   _ActivityPair(this.id);
 }
 
+/// Title for a section
 class _Title extends StatelessWidget {
   final String _text;
 

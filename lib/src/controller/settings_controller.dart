@@ -4,8 +4,10 @@ import 'package:gluecks_barometer/src/data/settings_dao.dart';
 import 'package:gluecks_barometer/src/model/settings.dart';
 import 'package:gluecks_barometer/src/view/reminder_notification.dart';
 
+/// Controller for the [SettingsTap] screen
 class SettingsController extends ChangeNotifier {
 
+  /// Dark and light theme data
   final Map<ThemeType, ThemeData> themeData = {
     ThemeType.LIGHT: ThemeData(
         brightness: Brightness.light,
@@ -30,6 +32,7 @@ class SettingsController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Return theme data from a theme type
   ThemeData getThemeData(ThemeType type) {
     return themeData[settings.theme];
   }

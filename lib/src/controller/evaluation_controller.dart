@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:gluecks_barometer/src/controller/data_controller.dart';
 import 'package:gluecks_barometer/src/model/entry.dart';
 
+/// A selection of available evaluation timespans
 enum EvalTimespan { WEEK, MONTH, YEAR, ALL }
 
+/// Allow  [EvalTimespan] to be converted to description strings
 extension ToString on EvalTimespan {
   String description() {
     switch (this) {
@@ -21,7 +23,9 @@ extension ToString on EvalTimespan {
   }
 }
 
+/// Controller used in combination with the [DataController] for evaluating user data.
 class EvaluationController extends ChangeNotifier {
+
   EvalTimespan _timespan = EvalTimespan.WEEK;
 
   EvalTimespan get timespan => _timespan;
@@ -31,6 +35,7 @@ class EvaluationController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Get user data from [dataSource] depending on the selected [timespan]
   List<Entry> getData(DataController dataSource) {
     DateTime now = DateTime.now();
     return List.of(dataSource.user.entries.where((entry) {

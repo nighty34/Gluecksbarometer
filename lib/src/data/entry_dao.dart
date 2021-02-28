@@ -4,7 +4,9 @@ import 'package:sqflite/sqflite.dart';
 import 'dao.dart';
 import 'db.dart';
 
+/// Database Access Object for user entries
 class EntryDao implements Dao<int, Entry> {
+
   final String _table = "entries";
   final String _activitiesTable = "entries_activities";
 

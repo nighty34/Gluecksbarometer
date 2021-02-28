@@ -9,6 +9,7 @@ import 'package:gluecks_barometer/src/view/mood_rating_bar.dart';
 import 'package:gluecks_barometer/src/view/new_activity.dart';
 import 'package:provider/provider.dart';
 
+/// Screen to create a new entry
 class NewDatapoint extends StatelessWidget {
 
   @override
@@ -186,17 +187,5 @@ class NewDatapoint extends StatelessWidget {
                   builder: (_) =>
                       NewActivity())));
     }
-  }
-
-  double _getActionItemSize() {
-    return Container(
-      padding: EdgeInsets.all(5),
-      child: Column(
-        children: [
-          Icon(Icons.height),
-          Text("Messaktion")
-        ],
-      ),
-    ).createElement().size.height;
   }
 }

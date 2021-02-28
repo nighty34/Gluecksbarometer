@@ -1,16 +1,33 @@
-import 'dart:convert';
 
+
+/// A quote to be shown to the user
+///
+/// The quote has a text and an author. It can be saved to a
+/// list by the user.
 class Quote {
 
+  /// The id by which the database identifies the quote
   int id;
+
+  /// The quotes body
   String text;
+
+  /// The author of the quote
   String author;
+
+  /// The time and date at which the quote has last been featured as
+  /// todays quote
   DateTime shown;
+
+  /// Whether the quote has been saved to the users list of favorites.
   bool saved;
 
   Quote(this.text, this.author, this.shown, this.saved);
+
+  /// Create a quote with the id given
   Quote.identified(this.id, this.text, this.author, this.shown, this.saved);
 
+  /// Create a quote from a [map]
   Quote.fromMap(Map<String, dynamic> map) {
     this.id = map["id"];
     this.text = map["text"];
@@ -19,6 +36,7 @@ class Quote {
     this.saved = map["saved"] == 1 ? true : false;
   }
 
+  /*
   Quote.fromJson(String json) {
     var decoded = jsonDecode(json);
     assert(decoded is Map);
@@ -32,7 +50,9 @@ class Quote {
     this.shown = DateTime.now();
     this.saved = false;
   }
+   */
 
+  /// Create a map from this quote, in the format accepted by [Quote.fromMap]
   Map<String, dynamic> toMap() {
     Map<String, dynamic> data = {
       "text": text,

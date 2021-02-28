@@ -5,6 +5,7 @@ import 'package:gluecks_barometer/src/controller/new_activity_controller.dart';
 import 'package:gluecks_barometer/src/model/activity.dart';
 import 'package:provider/provider.dart';
 
+/// Screen that lets the user create a new activity
 class NewActivity extends StatelessWidget {
 
   @override

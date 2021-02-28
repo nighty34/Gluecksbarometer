@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
+/// Singleton for a reminder notification occuring daily at a specified time.
 class ReminderNotification {
 
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
@@ -32,6 +32,7 @@ class ReminderNotification {
     return _instance;
   }
 
+  /// Schedule a notification at the specified [time] of day with a [title] and a [message]
   scheduleNotification(TimeOfDay time, String title, String message) async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails('gbm_daily', 'Tägliche Erinnerungen', 'Tägliche Erinnerungsnotifications');
     const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
@@ -50,6 +51,7 @@ class ReminderNotification {
 
   }
 
+  /// Unschedule the notification, so that it is no longer shown to the user.
   unscheduleNotification() {
     flutterLocalNotificationsPlugin.cancel(0);
   }

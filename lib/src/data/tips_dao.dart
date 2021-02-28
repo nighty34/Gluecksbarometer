@@ -5,6 +5,7 @@ import 'package:sqflite/sqflite.dart';
 import 'dao.dart';
 import 'db.dart';
 
+/// Database access object for tips
 class TipsDao extends Dao<int, Quote> {
 
   static const _table = "tips";

@@ -7,9 +7,11 @@ import 'package:gluecks_barometer/src/model/entry.dart';
 import 'package:gluecks_barometer/src/model/user.dart';
 import 'package:gluecks_barometer/src/view/custom_icons.dart';
 
+/// Controller for all user data (activities, mood, productivity)
 class DataController extends ChangeNotifier {
+
+  /// Icons for activities, identified by names
   final Map<String, IconData> activityIcons = {
-    // TODO add more
     "run": Icons.directions_run,
     "build": Icons.build,
     "sleep": Icons.airline_seat_individual_suite,
@@ -62,6 +64,7 @@ class DataController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Add [activity] to the users data repo
   addActivity(Activity activity) async {
     int id = await ActivityDao().insert(activity);
     activity.id = id;
@@ -69,6 +72,7 @@ class DataController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Remove an activity with a specific [id] from the users data repo
   removeActivity(int id) async {
     ActivityDao().delete(id);
     _user.activities.removeWhere((key, _) => key == id);
@@ -76,12 +80,14 @@ class DataController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Update [activity], given its id
   updateActivity(Activity activity) async {
     ActivityDao().update(activity);
     _user.activities[activity.id] = activity;
     notifyListeners();
   }
 
+  /// Add [entry] to the users data repo
   addEntry(Entry entry) async {
     int id = await EntryDao().insert(entry);
     entry.id = id ;
@@ -89,6 +95,7 @@ class DataController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Remove an entry with a specified [index] from the users data repo
   removeEntry(int index) async {
     EntryDao().delete(_user.entries[index].id);
     _user.entries.removeAt(index);

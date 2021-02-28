@@ -27,6 +27,7 @@
 ///
 import 'package:flutter/widgets.dart';
 
+/// A utility class containing the icon data for some custom icons.
 class CustomIcons {
   CustomIcons._();
 

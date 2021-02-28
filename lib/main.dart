@@ -15,13 +15,16 @@ import 'package:provider/provider.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
+/// main function (runs the app)
 void main() {
   tz.initializeTimeZones();
   tz.setLocalLocation(tz.getLocation("Europe/Zurich"));
   runApp(Gluecksbarometer());
 }
 
+/// Main class, providing the app
 class Gluecksbarometer extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -51,7 +54,9 @@ class Gluecksbarometer extends StatelessWidget {
   }
 }
 
+/// Home screen, containing multiple tabs
 class Home extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     SettingsController settingsController = Provider.of<SettingsController>(context);

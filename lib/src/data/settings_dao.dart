@@ -4,6 +4,7 @@ import 'package:sqflite/sqflite.dart';
 import 'dao.dart';
 import 'db.dart';
 
+/// Database access object for settings
 class SettingsDao extends Dao<String, Settings> {
 
   final String _table = "settings";
